@@ -41,6 +41,7 @@ def run_agent(question: str):
     print(f"Question: {question}")
     print("="*60)
 
+    # history of messages
     messages = [
         SystemMessage(
             content=(
@@ -89,14 +90,15 @@ def run_agent(question: str):
         if tool_to_use is None:
             raise ValueError(f"Tool '{tool_name}' not found")
 
-        observation = tool_to_use.invoke(tool_args)
+        observation = tool_to_use.invoke(tool_args)     # get_product_price(product="laptop") or apply_discount(price=1299.99, discount_tier="gold")
 
         print(f"    [Tool Result] {observation}")
 
+        # history update
         messages.append(ai_message)
         messages.append(
             ToolMessage(content=str(observation), tool_call_id=tool_call_id)
-        )
+        )       
 
     print("ERROR: Max iterations reached without a final answer")
     return None
